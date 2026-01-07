@@ -4,7 +4,9 @@ const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ message: 'Unauthorized' })
+    const err = new Error('Authentication required')
+    err.statusCode = 401
+    return next(err)
   }
 
   const token = authHeader.split(' ')[1]
